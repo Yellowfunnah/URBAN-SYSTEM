@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{1cdd42ec-316c-48ed-af31-e7f90e7d7118}</ProjectGuid>
-    <RootNamespace>ArrayProgram</RootNamespace>
+    <ProjectGuid>{3abfbab8-ddc9-4996-8b2e-5adeafec1c5c}</ProjectGuid>
+    <RootNamespace>LinkedListProgram</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,29 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DataLoader.h" />
-    <ClInclude Include="EmissionAnalysis.h" />
-    <ClInclude Include="Functions.h" />
-    <ClInclude Include="Performance.h" />
-    <ClInclude Include="Recommendations.h" />
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Resident.h" />
-    <ClInclude Include="Searching.h" />
-    <ClInclude Include="Sorting.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataLoader.cpp" />
-    <ClCompile Include="EmissionAnalysis.cpp" />
-    <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Performance.cpp" />
-    <ClCompile Include="Recommendations.cpp" />
-    <ClCompile Include="Searching.cpp" />
-    <ClCompile Include="Sorting.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="dataset1-cityA.csv" />
-    <None Include="dataset2-cityB.csv" />
-    <None Include="dataset3-cityC.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

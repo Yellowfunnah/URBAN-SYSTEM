@@ -4,4 +4,5 @@
     <Platform Name="x86" />
   </Configurations>
   <Project Path="Array_Program/Array_Program.vcxproj" Id="1cdd42ec-316c-48ed-af31-e7f90e7d7118" />
+  <Project Path="LinkedList_Program/LinkedList_Program.vcxproj" Id="3abfbab8-ddc9-4996-8b2e-5adeafec1c5c" />
 </Solution>
