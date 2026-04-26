@@ -3,11 +3,10 @@
 #define DATALOADER_H
 
 #include <string>
-#include "Resident.h"
+#include "LinkedList.h"
 
 using namespace std;
 
-
-void loadData(string filename, Resident residents[], int& size);
+void loadData(string filename, LinkedList& list);
 
 #endif
