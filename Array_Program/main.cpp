@@ -14,9 +14,10 @@ void runCityMenu(Resident residents[], int size) {
     do {
         cout << "\n===== CITY MENU =====";
         cout << "\n1. Display Residents";
-        cout << "\n2. Sort by Age";
+        cout << "\n2. Sorting Experiment";
         cout << "\n3. Search by Transport";
         cout << "\n4. Search by Distance";
+        cout << "\n5. Sort by Age (Legacy Version)";
         cout << "\n0. Back to City Selection";
         cout << "\nEnter choice: ";
         cin >> choice;
@@ -27,9 +28,7 @@ void runCityMenu(Resident residents[], int size) {
             break;
 
         case 2:
-            sortByAge(residents, size);
-            cout << "\nSorted by Age:\n";
-            displayResidents(residents, size);
+            runSortingExperiment(residents, size);
             break;
 
         case 3: {
@@ -57,6 +56,12 @@ void runCityMenu(Resident residents[], int size) {
             searchByDistance(residents, size, distance);
             break;
         }
+
+        case 5:
+            sortByAge(residents, size);
+            cout << "\nSort by Age (Legacy Version)\n";
+            displayResidents(residents, size);
+            break;
 
         case 0:
             cout << "Returning to city selection...\n";

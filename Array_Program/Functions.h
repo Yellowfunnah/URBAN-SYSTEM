@@ -3,6 +3,7 @@
 #define FUNCTIONS_H
 
 #include "Resident.h"
+#include "Sorting.h"
 #include <string>
 
 using namespace std;
@@ -12,4 +13,5 @@ void sortByAge(Resident residents[], int size);
 void searchByTransport(Resident residents[], int size, string transport);
 void searchByDistance(Resident residents[], int size, double threshold);
 bool transportExists(Resident residents[], int size, string transport);
+void runSortingExperiment(Resident residents[], int size); //Dylan's Sorting
 #endif
