@@ -116,68 +116,122 @@ void searchByDistance(Resident residents[], int size, double threshold) {
 
 void runSortingExperiment(Resident residents[], int size) {
     if (size == 0) {
-        cout << "\nNo data loaded!\n";
+        cout << "\nSomething went EXTREMELY wrong! - Check if data file is in the correct location - Dylan\n";
         return;
     }
 
-    int sortBy, algorithm;
+    int sortByChoice, algorithm;
+	bool exitExperiment = false;
 
-    cout << "\n===== SORTING EXPERIMENT (Task 6) =====";
-    cout << "\n\nSort by:";
-    cout << "\n1. Age";
-    cout << "\n2. Daily Distance (km)";
-    cout << "\n3. Monthly Carbon Emission (kg)";
-    cout << "\nEnter choice: ";
-    cin >> sortBy;
+    do {
+        do {
+            cout << "\n===== SORTING EXPERIMENT =====";
+            cout << "\nSort by:";
+            cout << "\n1. Age";
+            cout << "\n2. Daily Distance (km)";
+            cout << "\n3. Monthly Carbon Emission (kg)";
+            cout << "\n0. Return to City Menu";
+            cout << "\nEnter choice: ";
+            cin >> sortByChoice;
 
-    cout << "\nSelect Algorithm:";
-    cout << "\n1. Bubble Sort (O(n²) - Slower)";
-    cout << "\n2. Quick Sort (O(n log n) - Faster)";
-    cout << "\nEnter choice: ";
-    cin >> algorithm;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "\nInvalid input! Please enter a number (0, 1, or 2).\n";
+                continue;
+            }
 
-    // Create backup to preserve original order
-    Resident* backup = new Resident[size];
-    for (int i = 0; i < size; i++) {
-        backup[i] = residents[i];
-    }
+            if (sortByChoice == 0) {
+                cout << "Returning to city menu...\n";
+                return;
+            }
+            else if (sortByChoice < 1 || sortByChoice > 3) {
+                cout << "Invalid choice! Please enter the valid options.\n";
+            }
+        } while (sortByChoice < 1 || sortByChoice > 3);
 
-    PerformanceData perf;
-    string algoName;
+        do
+        {
+            cout << "\nSelect Algorithm:";
+            cout << "\n1. Bubble Sort";
+            cout << "\n2. Quick Sort";
+            cout << "\n0. Return to Sorting Options";
+            cout << "\nEnter choice: ";
+            cin >> algorithm;
 
-    cout << "\n========================================";
-    cout << "\nSORTING IN PROGRESS...";
-    cout << "\n========================================\n";
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "\nInvalid input! Please enter a number (0, 1, or 2).\n";
+                continue;
+            }
 
-    if (algorithm == 1) {
-        algoName = "Bubble Sort";
-        perf = Sorting::bubbleSort(residents, size, sortBy);
-    }
-    else if (algorithm == 2) {
-        algoName = "Quick Sort";
-        perf = Sorting::quickSort(residents, size, sortBy);
-    }
-    else {
-        cout << "Invalid algorithm choice!\n";
-        delete[] backup;
-        return;
-    }
+            if (algorithm == 0) {
+                cout << "Returning to sorting options...\n";
+                break;
+            }
+            else if (algorithm < 1 || algorithm > 2) {
+                cout << "Invalid choice! Please enter the valid options.\n";
+			}
+		} while (algorithm < 1 || algorithm > 2);
 
-    // Display performance
-    Sorting::displayPerformance(algoName, perf, size);
+            if (algorithm == 0) {
+                continue;
+            }
+            // Create backup to preserve original order
+            Resident* backup = new Resident[size];
+            for (int i = 0; i < size; i++) {
+                backup[i] = residents[i];
+            }
 
-    // Display sorted results
-    Sorting::displaySortedResults(residents, size, sortBy);
+            PerformanceData perf;
+            string algoName;
 
-    // Restore original order
-    for (int i = 0; i < size; i++) {
-        residents[i] = backup[i];
-    }
-    delete[] backup;
+            if (algorithm == 1) {
+                algoName = "Bubble Sort";
+                perf = Sorting::bubbleSort(residents, size, sortByChoice);
+            }
+            else if (algorithm == 2) {
+                algoName = "Quick Sort";
+                perf = Sorting::quickSort(residents, size, sortByChoice);
+            }
 
-    // Reminder for documentation comparison
-    cout << "\n💡 DOCUMENTATION NOTE:";
-    cout << "\n   To compare with Linked List, run the same operation";
-    cout << "\n   in LinkedList_Program and record the time/memory.";
-    cout << "\n   Then compare both results in your Solution Work report.\n";
+            // Display sorted results
+            Sorting::displaySortedResults(residents, size, sortByChoice);
+
+            // Display performance
+            Sorting::displayPerformance(algoName, perf, size);
+
+            // Restore original order
+            for (int i = 0; i < size; i++) {
+                residents[i] = backup[i];
+            }
+            delete[] backup;
+
+            // Reminder for documentation comparison
+            cout << "\nDOCUMENTATION NOTE:";
+            cout << "\nTo compare with Linked List, run the same operation";
+            cout << "\nin LinkedList_Program and record the time/memory.";
+            cout << "\nThen compare both results in for the report.";
+            cout << "\nRunning the same type of sort and algorithm could lead to little timing offset.";
+            cout << "\nHowever it appear this is normal so don't worry - Dylan\n";
+
+            int exitExperimentOpt;
+            cout << "\nDo another sorting experiment? (1 = Yes / 0 = No): ";
+            cin >> exitExperimentOpt;
+
+            while (cin.fail() || (exitExperimentOpt != 0 && exitExperimentOpt != 1)) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "Invalid input! Please enter 0 for No or 1 for Yes: ";
+                cin >> exitExperimentOpt;
+            }
+
+            if (exitExperimentOpt == 0) {
+                exitExperiment = true;
+            }
+
+    } while (!exitExperiment);
+
+	cout << "Exiting sorting experiment... Cya!\n";
 }
