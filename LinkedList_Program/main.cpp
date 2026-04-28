@@ -3,10 +3,11 @@
 #include <limits>
 #include "LinkedList.h"
 #include "DataLoader.h"
+#include "EmissionAnalysis.h"
 
 using namespace std;
 
-void runCityMenu(LinkedList& list) {
+void runCityMenu(LinkedList& list, string cityName) {
     int choice;
 
     do {
@@ -14,6 +15,7 @@ void runCityMenu(LinkedList& list) {
         cout << "\n1. Display Residents";
         cout << "\n2. Search by Transport";
         cout << "\n3. Search by Distance";
+        cout << "\n4. Carbon Emission Analysis";
         cout << "\n0. Back to City Selection";
         cout << "\nEnter choice: ";
         cin >> choice;
@@ -57,6 +59,10 @@ void runCityMenu(LinkedList& list) {
             break;
         }
 
+        case 4:
+            runEmissionAnalysis(list, cityName);
+            break;
+
         case 0:
             cout << "Returning to city selection...\n";
             break;
@@ -84,6 +90,7 @@ int main() {
         cout << "\n1. City A - Metropolitan City";
         cout << "\n2. City B - University Town";
         cout << "\n3. City C - Suburban/Rural Area";
+        cout << "\n4. Compare All Cities - Emission Analysis";
         cout << "\n0. Exit";
         cout << "\nEnter choice: ";
         cin >> cityChoice;
@@ -97,15 +104,23 @@ int main() {
 
         switch (cityChoice) {
         case 1:
-            runCityMenu(cityA);
+            runCityMenu(cityA, "City A - Metropolitan");
             break;
 
         case 2:
-            runCityMenu(cityB);
+            runCityMenu(cityB, "City B - University Town");
             break;
 
         case 3:
-            runCityMenu(cityC);
+            runCityMenu(cityC, "City C - Suburban/Rural");
+            break;
+
+        case 4:
+            compareAllCities(
+                cityA, "City A - Metropolitan",
+                cityB, "City B - University Town",
+                cityC, "City C - Suburban/Rural"
+            );
             break;
 
         case 0:
@@ -119,4 +134,4 @@ int main() {
     } while (cityChoice != 0);
 
     return 0;
-} // afnan you silly 
+}

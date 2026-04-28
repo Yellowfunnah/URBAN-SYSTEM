@@ -5,10 +5,9 @@
 
 using namespace std;
 
-//Carbon Emission Analysis - Array version
-//Monthly emission = dailyDistance x emissionFactor x averageDays
+//Carbon Emission Analysis - Linked List
+//Traverses the linked list with Node* current = head, moving via current->next
 
-//The transport modes present across all three datasets
 static const int TOTAL_MODES = 6;
 static const string TRANSPORT_MODES[TOTAL_MODES] = {
     "Car", "Bus", "Bicycle", "Walking", "School Bus", "Carpool"
@@ -28,12 +27,27 @@ static int findTransportIndex(string mode) {
     return -1;
 }
 
-//Shows the total monthly CO2 emissions for one city
-void showTotalEmissions(Resident residents[], int size, string cityName) {
-    double total = 0.0;
+//Helper that counts how many nodes are in the list
+static int countNodes(LinkedList& list) {
+    int count = 0;
+    Node* current = list.head;
+    while (current != nullptr) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
 
-    for (int i = 0; i < size; i++) {
-        total += residents[i].calculateMonthlyEmission();
+//Shows the total monthly CO2 emissions for one city
+void showTotalEmissions(LinkedList& list, string cityName) {
+    double total = 0.0;
+    int count = 0;
+
+    Node* current = list.head;
+    while (current != nullptr) {
+        total += current->data.calculateMonthlyEmission();
+        count++;
+        current = current->next;
     }
 
     cout << '\n';
@@ -41,22 +55,24 @@ void showTotalEmissions(Resident residents[], int size, string cityName) {
     cout << "  Total Emissions - " << cityName << '\n';
     printLine(55);
     cout << fixed << setprecision(2);
-    cout << "  Residents : " << size << '\n';
+    cout << "  Residents : " << count << '\n';
     cout << "  Total CO2 : " << total << " kg/month\n";
     printLine(55);
 }
 
 //Breaks down emissions by each transport mode for one city
-void showEmissionsByTransport(Resident residents[], int size, string cityName) {
+void showEmissionsByTransport(LinkedList& list, string cityName) {
     double emissionPerMode[TOTAL_MODES] = { 0 };
     int countPerMode[TOTAL_MODES] = { 0 };
 
-    for (int i = 0; i < size; i++) {
-        int idx = findTransportIndex(residents[i].transportMode);
+    Node* current = list.head;
+    while (current != nullptr) {
+        int idx = findTransportIndex(current->data.transportMode);
         if (idx >= 0) {
-            emissionPerMode[idx] += residents[i].calculateMonthlyEmission();
+            emissionPerMode[idx] += current->data.calculateMonthlyEmission();
             countPerMode[idx]++;
         }
+        current = current->next;
     }
 
     cout << '\n';
@@ -85,9 +101,7 @@ void showEmissionsByTransport(Resident residents[], int size, string cityName) {
 }
 
 //Breaks down emissions by age group for one city
-void showEmissionsByAgeGroup(Resident residents[], int size, string cityName) {
-
-    //We have 5 age groups matching getAgeGroup() in Resident.h
+void showEmissionsByAgeGroup(LinkedList& list, string cityName) {
     const int TOTAL_GROUPS = 5;
     const string GROUP_NAMES[TOTAL_GROUPS] = {
         "Children & Teenagers",
@@ -101,21 +115,23 @@ void showEmissionsByAgeGroup(Resident residents[], int size, string cityName) {
     int count[TOTAL_GROUPS] = { 0 };
     int transportCount[TOTAL_GROUPS][TOTAL_MODES] = { {0} };
 
-    for (int i = 0; i < size; i++) {
-        string group = residents[i].getAgeGroup();
+    Node* current = list.head;
+    while (current != nullptr) {
+        string group = current->data.getAgeGroup();
         int ag = -1;
 
-        //Match the age group string to an index
         for (int g = 0; g < TOTAL_GROUPS; g++) {
             if (GROUP_NAMES[g] == group) { ag = g; break; }
         }
-        if (ag < 0) continue;
 
-        int tm = findTransportIndex(residents[i].transportMode);
+        if (ag >= 0) {
+            int tm = findTransportIndex(current->data.transportMode);
+            totalEmission[ag] += current->data.calculateMonthlyEmission();
+            count[ag]++;
+            if (tm >= 0) transportCount[ag][tm]++;
+        }
 
-        totalEmission[ag] += residents[i].calculateMonthlyEmission();
-        count[ag]++;
-        if (tm >= 0) transportCount[ag][tm]++;
+        current = current->next;
     }
 
     cout << '\n';
@@ -126,7 +142,6 @@ void showEmissionsByAgeGroup(Resident residents[], int size, string cityName) {
     for (int ag = 0; ag < TOTAL_GROUPS; ag++) {
         if (count[ag] == 0) continue;
 
-        //Find the most used transport mode for this age group
         int topMode = 0;
         for (int t = 1; t < TOTAL_MODES; t++) {
             if (transportCount[ag][t] > transportCount[ag][topMode]) topMode = t;
@@ -148,22 +163,23 @@ void showEmissionsByAgeGroup(Resident residents[], int size, string cityName) {
 
 //Compares total emissions across all three cities
 void compareAllCities(
-    Resident cityA[], int sizeA,
-    Resident cityB[], int sizeB,
-    Resident cityC[], int sizeC)
+    LinkedList& cityA, string nameA,
+    LinkedList& cityB, string nameB,
+    LinkedList& cityC, string nameC)
 {
     double totalA = 0, totalB = 0, totalC = 0;
+    int cntA = 0, cntB = 0, cntC = 0;
 
-    for (int i = 0; i < sizeA; i++) totalA += cityA[i].calculateMonthlyEmission();
-    for (int i = 0; i < sizeB; i++) totalB += cityB[i].calculateMonthlyEmission();
-    for (int i = 0; i < sizeC; i++) totalC += cityC[i].calculateMonthlyEmission();
+    for (Node* c = cityA.head; c != nullptr; c = c->next) { totalA += c->data.calculateMonthlyEmission(); cntA++; }
+    for (Node* c = cityB.head; c != nullptr; c = c->next) { totalB += c->data.calculateMonthlyEmission(); cntB++; }
+    for (Node* c = cityC.head; c != nullptr; c = c->next) { totalC += c->data.calculateMonthlyEmission(); cntC++; }
 
     double grandTotal = totalA + totalB + totalC;
-    int grandCount = sizeA + sizeB + sizeC;
+    int grandCount = cntA + cntB + cntC;
 
     cout << '\n';
     printLine(70);
-    cout << "  Cross-City Emission Comparison\n";
+    cout << "  Cross-City Emission Comparison (Linked List)\n";
     printLine(70);
     cout << fixed << setprecision(2) << left
         << setw(28) << "City"
@@ -172,33 +188,21 @@ void compareAllCities(
         << setw(14) << "Avg CO2/Res"
         << '\n';
     printLine(70);
-    cout << setw(28) << "City A - Metropolitan"
-        << setw(12) << sizeA
-        << setw(18) << totalA
-        << setw(14) << (sizeA > 0 ? totalA / sizeA : 0) << '\n';
-    cout << setw(28) << "City B - University Town"
-        << setw(12) << sizeB
-        << setw(18) << totalB
-        << setw(14) << (sizeB > 0 ? totalB / sizeB : 0) << '\n';
-    cout << setw(28) << "City C - Suburban/Rural"
-        << setw(12) << sizeC
-        << setw(18) << totalC
-        << setw(14) << (sizeC > 0 ? totalC / sizeC : 0) << '\n';
+    cout << setw(28) << nameA << setw(12) << cntA << setw(18) << totalA << setw(14) << (cntA > 0 ? totalA / cntA : 0) << '\n';
+    cout << setw(28) << nameB << setw(12) << cntB << setw(18) << totalB << setw(14) << (cntB > 0 ? totalB / cntB : 0) << '\n';
+    cout << setw(28) << nameC << setw(12) << cntC << setw(18) << totalC << setw(14) << (cntC > 0 ? totalC / cntC : 0) << '\n';
     printLine(70);
-    cout << setw(28) << "Grand Total"
-        << setw(12) << grandCount
-        << setw(18) << grandTotal
-        << setw(14) << (grandCount > 0 ? grandTotal / grandCount : 0) << '\n';
+    cout << setw(28) << "Grand Total" << setw(12) << grandCount << setw(18) << grandTotal << setw(14) << (grandCount > 0 ? grandTotal / grandCount : 0) << '\n';
     printLine(70);
 }
 
 //Calls all analyses for one city
-void runEmissionAnalysis(Resident residents[], int size, string cityName) {
+void runEmissionAnalysis(LinkedList& list, string cityName) {
     cout << "\n========================================\n";
     cout << "  Carbon Emission Analysis\n";
     cout << "  City: " << cityName << "\n";
     cout << "========================================\n";
-    showTotalEmissions(residents, size, cityName);
-    showEmissionsByTransport(residents, size, cityName);
-    showEmissionsByAgeGroup(residents, size, cityName);
+    showTotalEmissions(list, cityName);
+    showEmissionsByTransport(list, cityName);
+    showEmissionsByAgeGroup(list, cityName);
 }
