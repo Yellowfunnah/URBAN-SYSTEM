@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AgeAnalysis.h" />
     <ClInclude Include="DataLoader.h" />
     <ClInclude Include="EmissionAnalysis.h" />
     <ClInclude Include="Functions.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="Sorting.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AgeAnalysis.cpp" />
     <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="EmissionAnalysis.cpp" />
     <ClCompile Include="Functions.cpp" />

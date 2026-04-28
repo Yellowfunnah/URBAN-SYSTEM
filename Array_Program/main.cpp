@@ -4,6 +4,8 @@
 #include "DataLoader.h"
 #include "Functions.h"
 #include "EmissionAnalysis.h"
+#include "AgeAnalysis.h"
+#include "Recommendations.h"
 
 //commit issue test
 
@@ -21,6 +23,7 @@ void runCityMenu(Resident residents[], int size, string cityName) {
         cout << "\n3. Search by Transport";
         cout << "\n4. Search by Distance";
         cout << "\n5. Carbon Emission Analysis";
+        cout << "\n6. Age Group Analysis";
         cout << "\n0. Back to City Selection";
         cout << "\nEnter choice: ";
         cin >> choice;
@@ -66,6 +69,10 @@ void runCityMenu(Resident residents[], int size, string cityName) {
             runEmissionAnalysis(residents, size, cityName);
             break;
 
+        case 6:
+            analyzeAgeGroups(residents, size, cityName);
+            break;
+
         case 0:
             cout << "Returning to city selection...\n";
             break;
@@ -98,6 +105,7 @@ int main() {
         cout << "\n2. City B - University Town";
         cout << "\n3. City C - Suburban/Rural Area";
         cout << "\n4. Compare All Cities - Emission Analysis";
+        cout << "\n5. Insights & Recommendations (All Cities)";
         cout << "\n0. Exit";
         cout << "\nEnter choice: ";
         cin >> cityChoice;
@@ -117,6 +125,10 @@ int main() {
 
         case 4:
             compareAllCities(cityA, sizeA, cityB, sizeB, cityC, sizeC);
+            break;
+
+        case 5:
+            showInsightsAndRecommendations(cityA, sizeA, cityB, sizeB, cityC, sizeC);
             break;
 
         case 0:
