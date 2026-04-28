@@ -145,29 +145,17 @@ void runSortingExperiment(Resident residents[], int size) {
     PerformanceData perf;
     string algoName;
 
-    cout << "\n========================================";
-    cout << "\nSORTING IN PROGRESS...";
-    cout << "\n========================================\n";
-
     if (algorithm == 1) {
         algoName = "Bubble Sort";
-        perf = Sorting::bubbleSort(residents, size, sortBy);
+                perf = Sorting::bubbleSort(residents, size, sortByChoice);
     }
     else if (algorithm == 2) {
         algoName = "Quick Sort";
-        perf = Sorting::quickSort(residents, size, sortBy);
-    }
-    else {
-        cout << "Invalid algorithm choice!\n";
-        delete[] backup;
-        return;
+                perf = Sorting::quickSort(residents, size, sortByChoice);
     }
 
     // Display performance
     Sorting::displayPerformance(algoName, perf, size);
-
-    // Display sorted results
-    Sorting::displaySortedResults(residents, size, sortBy);
 
     // Restore original order
     for (int i = 0; i < size; i++) {
@@ -176,8 +164,27 @@ void runSortingExperiment(Resident residents[], int size) {
     delete[] backup;
 
     // Reminder for documentation comparison
-    cout << "\n💡 DOCUMENTATION NOTE:";
-    cout << "\n   To compare with Linked List, run the same operation";
-    cout << "\n   in LinkedList_Program and record the time/memory.";
-    cout << "\n   Then compare both results in your Solution Work report.\n";
+            cout << "\nDOCUMENTATION NOTE:";
+            cout << "\nTo compare with Linked List, run the same operation";
+            cout << "\nin LinkedList_Program and record the time/memory.";
+            cout << "\nThen compare both results in for the report.";
+            cout << "\nRunning the same type of sort and algorithm could lead to little timing offset.";
+            cout << "\nHowever it appear this is normal so don't worry - Dylan\n";
+
+            int exitExperimentOpt;
+            cout << "\nDo another sorting experiment? (1 = Yes / 0 = No): ";
+            cin >> exitExperimentOpt;
+
+            while (exitExperimentOpt != 0 && exitExperimentOpt != 1) {
+                cout << "Invalid input! Please enter 0 for No or 1 for Yes: ";
+                cin >> exitExperimentOpt;
+            }
+
+            if (exitExperimentOpt == 0) {
+                exitExperiment = true;
+            }
+
+    } while (!exitExperiment);
+
+	cout << "Exiting sorting experiment... Cya!\n";
 }

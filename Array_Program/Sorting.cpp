@@ -124,8 +124,5 @@ void Sorting::displaySortedResults(Resident arr[], int size, int sortBy) {
             << endl;
     }
 
-    if (size > 20) {
-        cout << "\n... and " << (size - 20) << " more records\n";
-    }
     cout << string(100, '-') << "\n";
 }
