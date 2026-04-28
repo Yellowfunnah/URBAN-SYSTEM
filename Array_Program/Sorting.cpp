@@ -91,7 +91,6 @@ PerformanceData Sorting::quickSort(Resident arr[], int size, int sortBy) {
 
 void Sorting::displayPerformance(const string& algorithm, const PerformanceData& perf, int dataSize) {
     cout << "====================== PERFORMANCE REPORT ======================\n";
-    cout << "\n";
     cout << "Algorithm        : " << left << setw(33) << algorithm << " \n";
     cout << "Time taken       : " << right << setw(10) << fixed << setprecision(3) << perf.timeMs << " ms" << string(18, ' ') << " \n";
     cout << "Memory used      : " << right << setw(10) << perf.memoryBytes << " bytes" << string(18, ' ') << " \n";
