@@ -2,21 +2,23 @@
 
 using namespace std;
 
+// Bubble Sort
 bool Sorting::compareBubble(const Resident& a, const Resident& b, int sortBy) {
     // sortBy: 1 = Age, 2 = Daily Distance, 3 = Monthly Emission
     switch (sortBy) {
     case 1: return a.age > b.age;  // Descending for bubble sort swap condition
     case 2: return a.dailyDistance > b.dailyDistance;
-    //case 3: return a.calculateMonthlyEmission() > b.calculateMonthlyEmission();
+    case 3: return a.calculateMonthlyEmission() > b.calculateMonthlyEmission();
     default: return false;
     }
 }
 
+// Quick Sort
 bool Sorting::compareQuick(const Resident& a, const Resident& b, int sortBy) {
     switch (sortBy) {
     case 1: return a.age < b.age;  // Ascending for quick sort
     case 2: return a.dailyDistance < b.dailyDistance;
-    //case 3: return a.calculateMonthlyEmission() < b.calculateMonthlyEmission();
+    case 3: return a.calculateMonthlyEmission() < b.calculateMonthlyEmission();
     default: return false;
     }
 }
@@ -90,30 +92,30 @@ PerformanceData Sorting::quickSort(Resident arr[], int size, int sortBy) {
 void Sorting::displayPerformance(const string& algorithm, const PerformanceData& perf, int dataSize) {
     cout << "====================== PERFORMANCE REPORT ======================\n";
     cout << "\n";
-    cout << "  Algorithm        : " << left << setw(33) << algorithm << " \n";
-    cout << "  Time taken       : " << right << setw(10) << fixed << setprecision(3) << perf.timeMs << " ms" << string(18, ' ') << " \n";
-    cout << "  Memory used      : " << right << setw(10) << perf.memoryBytes << " bytes" << string(18, ' ') << " \n";
-    cout << "  Data size        : " << right << setw(10) << dataSize << " records" << string(18, ' ') << " \n";
+    cout << "Algorithm        : " << left << setw(33) << algorithm << " \n";
+    cout << "Time taken       : " << right << setw(10) << fixed << setprecision(3) << perf.timeMs << " ms" << string(18, ' ') << " \n";
+    cout << "Memory used      : " << right << setw(10) << perf.memoryBytes << " bytes" << string(18, ' ') << " \n";
+    cout << "Data size        : " << right << setw(10) << dataSize << " records" << string(18, ' ') << " \n";
     cout << "================================================================\n";
 }
 
 void Sorting::displaySortedResults(Resident arr[], int size, int sortBy) {
     string criteriaName = getCriteriaName(sortBy);
 
-    cout << "\n SORTED RESULTS (by " << criteriaName << ")\n";
+    cout << "\nSORTED RESULTS (by " << criteriaName << ")\n";
     cout << string(100, '-') << "\n";
     cout << left
         << setw(15) << "Resident ID"
         << setw(8) << "Age"
         << setw(25) << "Age Group"
-        << setw(15) << "Transport"
+        << setw(18) << "Transport"
         << setw(15) << "Distance"
-        << setw(15) << "Monthly CO2"
+        << setw(17) << "Monthly CO2"
         << endl;
     cout << string(100, '-') << "\n";
 
-    int displayCount = (size < 20) ? size : 20;
-    for (int i = 0; i < displayCount; i++) {
+    // Diplay all of em
+    for (int i = 0; i < size; i++) {
         cout << left
             << setw(15) << arr[i].residentID
             << setw(8) << arr[i].age
