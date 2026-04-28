@@ -134,6 +134,13 @@ void runSortingExperiment(Resident residents[], int size) {
             cout << "\nEnter choice: ";
             cin >> sortByChoice;
 
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "\nInvalid input! Please enter a number (0, 1, or 2).\n";
+                continue;
+            }
+
             if (sortByChoice == 0) {
                 cout << "Returning to city menu...\n";
                 return;
@@ -151,6 +158,13 @@ void runSortingExperiment(Resident residents[], int size) {
             cout << "\n0. Return to Sorting Options";
             cout << "\nEnter choice: ";
             cin >> algorithm;
+
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "\nInvalid input! Please enter a number (0, 1, or 2).\n";
+                continue;
+            }
 
             if (algorithm == 0) {
                 cout << "Returning to sorting options...\n";
@@ -206,7 +220,9 @@ void runSortingExperiment(Resident residents[], int size) {
             cout << "\nDo another sorting experiment? (1 = Yes / 0 = No): ";
             cin >> exitExperimentOpt;
 
-            while (exitExperimentOpt != 0 && exitExperimentOpt != 1) {
+            while (cin.fail() || (exitExperimentOpt != 0 && exitExperimentOpt != 1)) {
+                cin.clear();
+                cin.ignore(1000, '\n');
                 cout << "Invalid input! Please enter 0 for No or 1 for Yes: ";
                 cin >> exitExperimentOpt;
             }
