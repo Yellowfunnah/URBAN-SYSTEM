@@ -91,10 +91,10 @@ PerformanceData Sorting::quickSort(Resident arr[], int size, int sortBy) {
 
 void Sorting::displayPerformance(const string& algorithm, const PerformanceData& perf, int dataSize) {
     cout << "====================== PERFORMANCE REPORT ======================\n";
-    cout << "Algorithm        : " << left << setw(33) << algorithm << " \n";
-    cout << "Time taken       : " << right << setw(10) << fixed << setprecision(3) << perf.timeMs << " ms" << string(18, ' ') << " \n";
-    cout << "Memory used      : " << right << setw(10) << perf.memoryBytes << " bytes" << string(18, ' ') << " \n";
-    cout << "Data size        : " << right << setw(10) << dataSize << " records" << string(18, ' ') << " \n";
+    cout << "Algorithm        : " << left << setw(20) << algorithm << " \n";
+    cout << "Time taken       : " << left << setw(20) << fixed << setprecision(3) << perf.timeMs << " ms" << string(18, ' ') << " \n";
+    cout << "Memory used      : " << left << setw(20) << perf.memoryBytes << " bytes" << string(18, ' ') << " \n";
+    cout << "Data size        : " << left << setw(20) << dataSize << " records" << string(18, ' ') << " \n";
     cout << "================================================================\n";
 }
 
@@ -102,28 +102,28 @@ void Sorting::displaySortedResults(Resident arr[], int size, int sortBy) {
     string criteriaName = getCriteriaName(sortBy);
 
     cout << "\nSORTED RESULTS (by " << criteriaName << ")\n";
-    cout << string(100, '-') << "\n";
+    cout << string(120, '-') << "\n";
     cout << left
         << setw(15) << "Resident ID"
         << setw(8) << "Age"
-        << setw(25) << "Age Group"
-        << setw(18) << "Transport"
+        << setw(35) << "Age Group"
+        << setw(25) << "Transport"
         << setw(15) << "Distance"
-        << setw(17) << "Monthly CO2"
+        << setw(18) << "Monthly CO2"
         << endl;
-    cout << string(100, '-') << "\n";
+    cout << string(120, '-') << "\n";
 
     // Diplay all of em
     for (int i = 0; i < size; i++) {
         cout << left
             << setw(15) << arr[i].residentID
             << setw(8) << arr[i].age
-            << setw(25) << arr[i].getAgeGroup()
-            << setw(15) << arr[i].transportMode
+            << setw(35) << arr[i].getAgeGroup()
+            << setw(25) << arr[i].transportMode
             << setw(15) << fixed << setprecision(2) << arr[i].dailyDistance
-            << setw(15) << fixed << setprecision(2) << arr[i].calculateMonthlyEmission()
+            << setw(18) << fixed << setprecision(2) << arr[i].calculateMonthlyEmission()
             << endl;
     }
 
-    cout << string(100, '-') << "\n";
+    cout << string(120, '-') << "\n";
 }
