@@ -1,5 +1,4 @@
 // AgeAnalysis.h
-// Written by: Aimen Rizwan
 // just the declarations for my task 4 functions
 // the actual code is in AgeAnalysis.cpp
 

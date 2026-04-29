@@ -1,5 +1,4 @@
 // AgeAnalysis.cpp
-// Written by: Aimen Rizwan
 // Task 4 - Age Group Categorization and Analysis
 //
 // what this file does:

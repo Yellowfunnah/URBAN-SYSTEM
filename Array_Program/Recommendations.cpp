@@ -1,5 +1,4 @@
 // Recommendations.cpp
-// Written by: Aimen Rizwan
 // Task 9 - Insights and Recommendations
 //
 // what this file does:

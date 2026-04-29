@@ -1,5 +1,4 @@
 // Recommendations.h
-// Written by: Aimen Rizwan
 // declarations for my task 9 functions
 // actual code is in Recommendations.cpp
 

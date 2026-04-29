@@ -1,5 +1,4 @@
 // AgeAnalysis.h
-// Written by: Aimen Rizwan
 // Task 4 - Age Group Analysis (Linked List Program)
 // declarations for the linked list version of my functions
 
