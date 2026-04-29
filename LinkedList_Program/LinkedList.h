@@ -11,12 +11,12 @@ struct Node {
 
 class LinkedList {
 public:
-    Node* head;
+    LinkedList();
+	LinkedList(string);
+	~LinkedList();
 
     LinkedList();              
     void insertAtEnd(Resident r);
-    void display();
-
     void searchByTransport(string transport);
     void searchByDistance(double threshold);
 };
