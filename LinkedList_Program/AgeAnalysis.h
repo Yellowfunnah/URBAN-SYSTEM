@@ -1,17 +1,17 @@
 // AgeAnalysis.h
 // Written by: Aimen Rizwan
-// just the declarations for my task 4 functions
-// the actual code is in AgeAnalysis.cpp
+// Task 4 - Age Group Analysis (Linked List Program)
+// declarations for the linked list version of my functions
 
 #pragma once
 #ifndef AGEANALYSIS_H
 #define AGEANALYSIS_H
 
-#include "Resident.h"
+#include "LinkedList.h"
 #include <string>
 using namespace std;
 
 // main function - shows submenu and handles age group analysis
-void analyzeAgeGroups(Resident residents[], int size, string cityName);
+void analyzeAgeGroups(LinkedList& list, string cityName);
 
 #endif
