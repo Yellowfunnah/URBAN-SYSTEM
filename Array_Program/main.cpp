@@ -3,6 +3,7 @@
 #include "Resident.h"
 #include "DataLoader.h"
 #include "Functions.h"
+#include "Searching.h"
 #include "EmissionAnalysis.h"
 #include "AgeAnalysis.h"
 #include "Recommendations.h"
@@ -20,10 +21,12 @@ void runCityMenu(Resident residents[], int size, string cityName) {
         cout << "\n===== CITY MENU =====";
         cout << "\n1. Display Residents";
         cout << "\n2. Sorting Experiment";
-        cout << "\n3. Search by Transport";
-        cout << "\n4. Search by Distance";
-        cout << "\n5. Carbon Emission Analysis";
-        cout << "\n6. Age Group Analysis";
+        cout << "\n3. Search by Transport (Linear)";
+        cout << "\n4. Search by Distance (Linear)";
+        cout << "\n5. Binary Search by Transport";
+        cout << "\n6. Search by Age Group";
+        cout << "\n7. Carbon Emission Analysis";
+        cout << "\n8. Age Group Analysis";
         cout << "\n0. Back to City Selection";
         cout << "\nEnter choice: ";
         cin >> choice;
@@ -41,33 +44,65 @@ void runCityMenu(Resident residents[], int size, string cityName) {
             string mode;
             cout << "Enter transport mode: ";
             cin >> mode;
-
             cin.clear();
             cin.ignore(1000, '\n');
-
-            if (transportExists(residents, size, mode)) {
-                searchByTransport(residents, size, mode);
-            }
-            else {
-                cout << "Invalid transport mode for this city.\n";
-            }
-
+            LinearSearchByTransport(residents, size, mode);
             break;
         }
-
         case 4: {
             double distance;
             cout << "Enter minimum distance (km): ";
             cin >> distance;
-            searchByDistance(residents, size, distance);
+            LinearSearchByDistance(residents, size, distance);
+            break;
+        }
+        case 5: {
+            string mode;
+            cout << "Enter transport mode: ";
+            cin >> mode;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            for (int i = 0; i < size - 1; i++) {
+                for (int j = 0; j < size - i - 1; j++) {
+                    if (residents[j].transportMode > residents[j + 1].transportMode) {
+                        Resident temp = residents[j];
+                        residents[j] = residents[j + 1];
+                        residents[j + 1] = temp;
+                    }
+                }
+            }
+            BinarySearchByTransport(residents, size, mode);
             break;
         }
 
-        case 5:
+        case 6: {
+            cout << "Select Age Group:\n";
+            cout << "1. Children & Teenagers\n";
+            cout << "2. University Students / Young Adults\n";
+            cout << "3. Working Adults (Early Career)\n";
+            cout << "4. Working Adults (Late Career)\n";
+            cout << "5. Senior Citizens / Retirees\n";
+            cout << "Enter choice: ";
+            int ageChoice;
+            cin >> ageChoice;
+
+            string ageGroup;
+            if (ageChoice == 1) ageGroup = "Children & Teenagers";
+            else if (ageChoice == 2) ageGroup = "University Students / Young Adults";
+            else if (ageChoice == 3) ageGroup = "Working Adults (Early Career)";
+            else if (ageChoice == 4) ageGroup = "Working Adults (Late Career)";
+            else if (ageChoice == 5) ageGroup = "Senior Citizens / Retirees";
+            else { cout << "Invalid choice!\n"; break; }
+
+            SearchByAge(residents, size, ageGroup);
+            break;
+        }
+
+        case 7:
             runEmissionAnalysis(residents, size, cityName);
             break;
 
-        case 6:
+        case 8:
             analyzeAgeGroups(residents, size, cityName);
             break;
 
@@ -91,9 +126,9 @@ int main() {
     int sizeB = 0;
     int sizeC = 0;
 
-    loadData("dataset1-cityA.csv", cityA, sizeA);
-    loadData("dataset2-cityB.csv", cityB, sizeB);
-    loadData("dataset3-cityC.csv", cityC, sizeC);
+    loadData("C:\\Users\\magui\\Documents\\GitHub\\URBAN-SYSTEM\\Array_Program\\dataset1-cityA.csv", cityA, sizeA);
+    loadData("C:\\Users\\magui\\Documents\\GitHub\\URBAN-SYSTEM\\Array_Program\\dataset2-cityB.csv", cityB, sizeB);
+    loadData("C:\\Users\\magui\\Documents\\GitHub\\URBAN-SYSTEM\\Array_Program\\dataset3-cityC.csv", cityC, sizeC);
 
     int cityChoice;
 
