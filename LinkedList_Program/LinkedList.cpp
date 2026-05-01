@@ -23,7 +23,6 @@ void LinkedList::insertAtEnd(Resident r) {
         }
         current->next = newNode;
     }
-}
 
 void LinkedList::display() {
     Node* current = head;
