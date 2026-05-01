@@ -126,9 +126,9 @@ int main() {
     int sizeB = 0;
     int sizeC = 0;
 
-    loadData("C:\\Users\\magui\\Documents\\GitHub\\URBAN-SYSTEM\\Array_Program\\dataset1-cityA.csv", cityA, sizeA);
-    loadData("C:\\Users\\magui\\Documents\\GitHub\\URBAN-SYSTEM\\Array_Program\\dataset2-cityB.csv", cityB, sizeB);
-    loadData("C:\\Users\\magui\\Documents\\GitHub\\URBAN-SYSTEM\\Array_Program\\dataset3-cityC.csv", cityC, sizeC);
+    loadData("dataset1-cityA.csv", cityA, sizeA);
+    loadData("dataset2-cityB.csv", cityB, sizeB);
+    loadData("dataset3-cityC.csv", cityC, sizeC);
 
     int cityChoice;
 
