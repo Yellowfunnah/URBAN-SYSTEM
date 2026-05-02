@@ -56,13 +56,15 @@ void printGroupAnalysis(Resident residents[], int size, string cityName,
         }
     }
 
-    // group header - no blank line before it
+    // group header
     cout << "  >> " << groupName << "  |  Ages " << ageRange << "\n";
     cout << "  " << string(56, '-') << "\n";
 
-    // skip table if nobody is in this group
+    // show clean message if nobody is in this group
+    // this happens because some cities only have certain age ranges
     if (totalPeople == 0) {
-        cout << "    No residents in this group for " << cityName << "\n";
+        cout << "    No data available for this age group.\n";
+        cout << "    (This city does not have residents in this age range)\n";
         cout << "  " << string(56, '-') << "\n";
         return;
     }
@@ -71,6 +73,18 @@ void printGroupAnalysis(Resident residents[], int size, string cityName,
     int topIdx = 0;
     for (int m = 1; m < NUM_MODES; m++)
         if (modeCount[m] > modeCount[topIdx]) topIdx = m;
+
+    // find which mode has the highest total emission
+    int highEmitIdx = 0;
+    for (int m = 1; m < NUM_MODES; m++)
+        if (modeEmit[m] > modeEmit[highEmitIdx]) highEmitIdx = m;
+
+    // find which mode has the lowest emission
+    // only check modes that have at least 1 person
+    int lowEmitIdx = topIdx;
+    for (int m = 0; m < NUM_MODES; m++)
+        if (modeCount[m] > 0 && modeEmit[m] < modeEmit[lowEmitIdx])
+            lowEmitIdx = m;
 
     double avgEmit = totalEmit / totalPeople;
 
@@ -97,18 +111,24 @@ void printGroupAnalysis(Resident residents[], int size, string cityName,
         }
     }
 
-    // summary under the table
+    // summary lines under the table
     cout << "  " << string(56, '-') << "\n";
-    cout << "    Residents     : " << totalPeople << "\n";
-    cout << "    Top Transport : " << modes[topIdx]
+    cout << "    Residents      : " << totalPeople << "\n";
+    cout << "    Preferred Mode : " << modes[topIdx]
         << "  --  " << modeCount[topIdx] << " users"
         << "  (" << fixed << setprecision(1)
         << (double)modeCount[topIdx] / totalPeople * 100.0 << "%)\n";
-    cout << "    Total CO2     : " << fixed << setprecision(2)
+    cout << "    Highest Emitter: " << modes[highEmitIdx]
+        << "  (" << fixed << setprecision(2)
+        << modeEmit[highEmitIdx] << " kg total)\n";
+    cout << "    Lowest Emitter : " << modes[lowEmitIdx]
+        << "  (" << fixed << setprecision(2)
+        << modeEmit[lowEmitIdx] << " kg total)\n";
+    cout << "    Total CO2      : " << fixed << setprecision(2)
         << totalEmit << " kg/month\n";
-    cout << "    Avg CO2       : " << fixed << setprecision(2)
+    cout << "    Avg CO2        : " << fixed << setprecision(2)
         << avgEmit << " kg/resident\n";
-    cout << "    Emission Level: " << getEmissionLevel(avgEmit) << "\n";
+    cout << "    Emission Level : " << getEmissionLevel(avgEmit) << "\n";
     cout << "  " << string(56, '-') << "\n";
 }
 
@@ -157,6 +177,7 @@ void analyzeAgeGroups(Resident residents[], int size, string cityName) {
         cin >> choice;
 
         if (choice >= 1 && choice <= 5) {
+            // user picked one specific group
             int g = choice - 1;
             cout << "\n  " << string(48, '=') << "\n";
             cout << "        AGE GROUP ANALYSIS\n";
@@ -167,6 +188,7 @@ void analyzeAgeGroups(Resident residents[], int size, string cityName) {
 
         }
         else if (choice == 6) {
+            // view all groups one after another
             cout << "\n  " << string(48, '=') << "\n";
             cout << "        ALL AGE GROUPS\n";
             cout << "        City            : " << cityName << "\n";
@@ -209,8 +231,7 @@ void analyzeAgeGroups(Resident residents[], int size, string cityName) {
                     if (modeCount[m] > modeCount[topIdx]) topIdx = m;
                 groupTopMode[g] = totalPeople > 0 ? modes[topIdx] : "N/A";
 
-                // print this group then move straight to the next
-                // no blank line between groups
+                // print full breakdown then move to next group
                 printGroupAnalysis(residents, size, cityName,
                     groups[g], ranges[g], modes, NUM_MODES);
             }
@@ -220,37 +241,35 @@ void analyzeAgeGroups(Resident residents[], int size, string cityName) {
             for (int g = 1; g < NUM_GROUPS; g++)
                 if (groupTotals[g] > groupTotals[highG]) highG = g;
 
-            // summary table - fixed width so names dont get cut off
-            cout << "\n  " << string(62, '=') << "\n";
+            // summary table - column wide enough for full group names
+            cout << "\n  " << string(68, '=') << "\n";
             cout << "        SUMMARY  --  " << cityName << "\n";
-            cout << "  " << string(62, '=') << "\n";
+            cout << "  " << string(68, '=') << "\n";
             cout << "  " << left
-                << setw(40) << "  Age Group"
+                << setw(46) << "  Age Group"
                 << setw(8) << "Res"
                 << setw(12) << "CO2 (kg)"
                 << "Top Mode\n";
-            cout << "  " << string(62, '-') << "\n";
+            cout << "  " << string(68, '-') << "\n";
 
             for (int g = 0; g < NUM_GROUPS; g++) {
-                // build label with age range and trim only if truly necessary
+                // build label with age range - no trimming
                 string label = groups[g] + " (" + ranges[g] + ")";
-                if ((int)label.length() > 37)
-                    label = label.substr(0, 36) + ".";
                 cout << "  " << left
-                    << setw(40) << ("  " + label)
+                    << setw(46) << ("  " + label)
                     << setw(8) << groupCounts[g]
                     << setw(12) << fixed << setprecision(2) << groupTotals[g]
                     << groupTopMode[g] << "\n";
             }
 
-            cout << "  " << string(62, '-') << "\n";
+            cout << "  " << string(68, '-') << "\n";
             cout << "    Total Residents :  " << size << "\n";
             cout << "    Total CO2       :  " << fixed << setprecision(2)
                 << cityTotal << " kg/month\n";
             if (size > 0)
                 cout << "    Avg CO2         :  " << fixed << setprecision(2)
                 << cityTotal / size << " kg/resident\n";
-            cout << "  " << string(62, '=') << "\n";
+            cout << "  " << string(68, '=') << "\n";
             cout << "  >> Insight: " << groups[highG]
                 << " is the biggest emitting group\n"
                 << "             with " << fixed << setprecision(2)

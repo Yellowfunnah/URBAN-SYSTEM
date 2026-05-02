@@ -133,15 +133,18 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Recommendations.h" />
     <ClInclude Include="Resident.h" />
     <ClInclude Include="Sorting.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AgeAnalysis.cpp" />
     <ClCompile Include="EmissionAnalysis.cpp" />
     <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Recommendations.cpp" />
     <ClCompile Include="Sorting.cpp" />
   </ItemGroup>
   <ItemGroup>
