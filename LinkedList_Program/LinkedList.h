@@ -15,7 +15,6 @@ public:
 	LinkedList(string);
 	~LinkedList();
 
-    LinkedList();              
     void insertAtEnd(Resident r);
     void searchByTransport(string transport);
     void searchByDistance(double threshold);
