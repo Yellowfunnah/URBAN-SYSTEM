@@ -16,7 +16,7 @@ bool Sorting::compareBubble(const Resident& a, const Resident& b, int sortBy) {
 // Quick Sort
 bool Sorting::compareQuick(const Resident& a, const Resident& b, int sortBy) {
     switch (sortBy) {
-    case 1: return a.age > b.age;
+    case 1: return a.age < b.age;
     case 2: return a.dailyDistance < b.dailyDistance;
     case 3: return a.calculateMonthlyEmission() < b.calculateMonthlyEmission();
     default: return false;

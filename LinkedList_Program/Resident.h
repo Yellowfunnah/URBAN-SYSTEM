@@ -20,7 +20,7 @@ public:
         averageDays = 0;
     }
 
-    double calculateMonthlyEmission() {
+    double calculateMonthlyEmission() const {
         return dailyDistance * emissionFactor * averageDays;
     }
 

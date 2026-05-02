@@ -134,12 +134,15 @@
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Resident.h" />
+    <ClInclude Include="Sorting.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EmissionAnalysis.cpp" />
     <ClCompile Include="DataLoader.cpp" />
+    <ClCompile Include="Functions.cpp" />
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Sorting.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dataset1-cityA.csv" />

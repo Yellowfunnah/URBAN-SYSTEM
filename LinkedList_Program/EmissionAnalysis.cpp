@@ -30,10 +30,10 @@ static int findTransportIndex(string mode) {
 //Helper that counts how many nodes are in the list
 static int countNodes(LinkedList& list) {
     int count = 0;
-    Node* current = list.head;
+    Node* current = list.getHead();
     while (current != nullptr) {
         count++;
-        current = current->next;
+        current = current->nextAddress;
     }
     return count;
 }
@@ -43,11 +43,11 @@ void showTotalEmissions(LinkedList& list, string cityName) {
     double total = 0.0;
     int count = 0;
 
-    Node* current = list.head;
+    Node* current = list.getHead();
     while (current != nullptr) {
         total += current->data.calculateMonthlyEmission();
         count++;
-        current = current->next;
+        current = current->nextAddress;
     }
 
     cout << '\n';
@@ -65,14 +65,14 @@ void showEmissionsByTransport(LinkedList& list, string cityName) {
     double emissionPerMode[TOTAL_MODES] = { 0 };
     int countPerMode[TOTAL_MODES] = { 0 };
 
-    Node* current = list.head;
+    Node* current = list.getHead();
     while (current != nullptr) {
         int idx = findTransportIndex(current->data.transportMode);
         if (idx >= 0) {
             emissionPerMode[idx] += current->data.calculateMonthlyEmission();
             countPerMode[idx]++;
         }
-        current = current->next;
+        current = current->nextAddress;
     }
 
     cout << '\n';
@@ -115,7 +115,7 @@ void showEmissionsByAgeGroup(LinkedList& list, string cityName) {
     int count[TOTAL_GROUPS] = { 0 };
     int transportCount[TOTAL_GROUPS][TOTAL_MODES] = { {0} };
 
-    Node* current = list.head;
+    Node* current = list.getHead();
     while (current != nullptr) {
         string group = current->data.getAgeGroup();
         int ag = -1;
@@ -131,7 +131,7 @@ void showEmissionsByAgeGroup(LinkedList& list, string cityName) {
             if (tm >= 0) transportCount[ag][tm]++;
         }
 
-        current = current->next;
+        current = current->nextAddress;
     }
 
     cout << '\n';
@@ -170,9 +170,9 @@ void compareAllCities(
     double totalA = 0, totalB = 0, totalC = 0;
     int cntA = 0, cntB = 0, cntC = 0;
 
-    for (Node* c = cityA.head; c != nullptr; c = c->next) { totalA += c->data.calculateMonthlyEmission(); cntA++; }
-    for (Node* c = cityB.head; c != nullptr; c = c->next) { totalB += c->data.calculateMonthlyEmission(); cntB++; }
-    for (Node* c = cityC.head; c != nullptr; c = c->next) { totalC += c->data.calculateMonthlyEmission(); cntC++; }
+    for (Node* c = cityA.getHead(); c != nullptr; c = c->nextAddress) { totalA += c->data.calculateMonthlyEmission(); cntA++; }
+    for (Node* c = cityB.getHead(); c != nullptr; c = c->nextAddress) { totalB += c->data.calculateMonthlyEmission(); cntB++; }
+    for (Node* c = cityC.getHead(); c != nullptr; c = c->nextAddress) { totalC += c->data.calculateMonthlyEmission(); cntC++; }
 
     double grandTotal = totalA + totalB + totalC;
     int grandCount = cntA + cntB + cntC;

@@ -3,6 +3,7 @@
 #include <limits>
 #include "LinkedList.h"
 #include "DataLoader.h"
+#include "Functions.h"
 #include "EmissionAnalysis.h"
 
 
@@ -14,9 +15,10 @@ void runCityMenu(LinkedList& list, string cityName) {
     do {
         cout << "\n===== CITY MENU =====";
         cout << "\n1. Display Residents";
-        cout << "\n2. Search by Transport";
-        cout << "\n3. Search by Distance";
-        cout << "\n4. Carbon Emission Analysis";
+		cout << "\n2. Sorting Experiment";
+        cout << "\n3. Search by Transport";
+        cout << "\n4. Search by Distance";
+        cout << "\n5. Carbon Emission Analysis";
         cout << "\n0. Back to City Selection";
         cout << "\nEnter choice: ";
         cin >> choice;
@@ -33,34 +35,38 @@ void runCityMenu(LinkedList& list, string cityName) {
             list.display();
             break;
 
-        case 2: {
-            string mode;
-            cout << "Enter transport mode: ";
-            cin >> mode;
-            cin.clear();
-            cin.ignore(1000, '\n');
-
-            list.searchByTransport(mode);
+        case 2:
+            runSortingExperiment(list, cityName);
             break;
-        }
 
-        case 3: {
-            double distance;
-            cout << "Enter minimum distance (km): ";
-            cin >> distance;
+        //case 3: {
+        //    string mode;
+        //    cout << "Enter transport mode: ";
+        //    cin >> mode;
+        //    cin.clear();
+        //    cin.ignore(1000, '\n');
 
-            if (cin.fail()) {
-                cin.clear();
-                cin.ignore(1000, '\n');
-                cout << "Invalid distance!\n";
-                break;
-            }
+        //    list.searchByTransport(mode);
+        //    break;
+        //}
 
-            list.searchByDistance(distance);
-            break;
-        }
+        //case 4: {
+        //    double distance;
+        //    cout << "Enter minimum distance (km): ";
+        //    cin >> distance;
 
-        case 4:
+        //    if (cin.fail()) {
+        //        cin.clear();
+        //        cin.ignore(1000, '\n');
+        //        cout << "Invalid distance!\n";
+        //        break;
+        //    }
+
+        //    list.searchByDistance(distance);
+        //    break;
+        //}
+
+        case 5:
             runEmissionAnalysis(list, cityName);
             break;
 
