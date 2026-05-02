@@ -83,8 +83,8 @@ void runSortingExperiment(LinkedList& list, const string& cityName) {
             perf = Sorting::mergeSort(list, sortByChoice);
         }
 
-        Sorting::displaySortedResults(list, sortByChoice);
         Sorting::displayPerformance(algoName, perf, dataSize);
+        Sorting::displaySortedResults(list, sortByChoice);
 
         list = backup;
 
