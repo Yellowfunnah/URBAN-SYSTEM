@@ -5,22 +5,35 @@
 
 using namespace std;
 
-//Carbon Emission Analysis - Array version
-//Monthly emission = dailyDistance x emissionFactor x averageDays
+//EmissionAnalysis.cpp - Array version
+//
+//this file handles everything related to carbon emission
+//analysis for the array program. it loops through the
+//residents array to calculate totals, breakdowns, and
+//find the highest/lowest emitters.
+//
+//formula used throughout:
+//monthly emission = dailyDistance x emissionFactor x averageDays
+//
+//the submenu inside runEmissionAnalysis()
 
-//The transport modes present across all three datasets
+
+//all transport modes that appear across the three datasets
 static const int TOTAL_MODES = 6;
 static const string TRANSPORT_MODES[TOTAL_MODES] = {
     "Car", "Bus", "Bicycle", "Walking", "School Bus", "Carpool"
 };
 
-//Prints a divider line to keep the tables tidy
+
+//helper - prints a divider line of a given width
 static void printLine(int width) {
     for (int i = 0; i < width; i++) cout << '-';
     cout << '\n';
 }
 
-//Finds the index of a transport mode in our list, returns -1 if not found
+
+//helper - finds the index of a transport mode string
+//returns -1 if not found
 static int findTransportIndex(string mode) {
     for (int i = 0; i < TOTAL_MODES; i++) {
         if (TRANSPORT_MODES[i] == mode) return i;
@@ -28,7 +41,8 @@ static int findTransportIndex(string mode) {
     return -1;
 }
 
-//Shows the total monthly CO2 emissions for one city
+
+//shows the total monthly co2 emissions for one city
 void showTotalEmissions(Resident residents[], int size, string cityName) {
     double total = 0.0;
 
@@ -46,48 +60,69 @@ void showTotalEmissions(Resident residents[], int size, string cityName) {
     printLine(55);
 }
 
-//Breaks down emissions by each transport mode for one city
+
+//shows emissions by transport mode, sorted highest to lowest
+//also shows each mode's % share of the city's total emissions
 void showEmissionsByTransport(Resident residents[], int size, string cityName) {
     double emissionPerMode[TOTAL_MODES] = { 0 };
     int countPerMode[TOTAL_MODES] = { 0 };
+    double cityTotal = 0.0;
 
     for (int i = 0; i < size; i++) {
         int idx = findTransportIndex(residents[i].transportMode);
         if (idx >= 0) {
-            emissionPerMode[idx] += residents[i].calculateMonthlyEmission();
+            double e = residents[i].calculateMonthlyEmission();
+            emissionPerMode[idx] += e;
             countPerMode[idx]++;
+            cityTotal += e;
+        }
+    }
+
+    //sort modes by emission descending using a simple bubble sort on indices
+    int order[TOTAL_MODES] = { 0, 1, 2, 3, 4, 5 };
+    for (int i = 0; i < TOTAL_MODES - 1; i++) {
+        for (int j = 0; j < TOTAL_MODES - i - 1; j++) {
+            if (emissionPerMode[order[j]] < emissionPerMode[order[j + 1]]) {
+                int temp = order[j];
+                order[j] = order[j + 1];
+                order[j + 1] = temp;
+            }
         }
     }
 
     cout << '\n';
-    printLine(65);
+    printLine(75);
     cout << "  Emissions by Transport Mode - " << cityName << '\n';
-    printLine(65);
+    printLine(75);
     cout << left
         << setw(14) << "Mode"
         << setw(10) << "Count"
-        << setw(22) << "Total CO2 (kg)"
+        << setw(20) << "Total CO2 (kg)"
         << setw(20) << "Avg CO2/Resident"
+        << setw(12) << "% of City"
         << '\n';
-    printLine(65);
+    printLine(75);
 
     for (int i = 0; i < TOTAL_MODES; i++) {
-        if (countPerMode[i] == 0) continue;
-        double avg = emissionPerMode[i] / countPerMode[i];
+        int idx = order[i];
+        if (countPerMode[idx] == 0) continue;
+        double avg = emissionPerMode[idx] / countPerMode[idx];
+        double pct = (cityTotal > 0) ? (emissionPerMode[idx] / cityTotal * 100.0) : 0.0;
         cout << fixed << setprecision(2) << left
-            << setw(14) << TRANSPORT_MODES[i]
-            << setw(10) << countPerMode[i]
-            << setw(22) << emissionPerMode[i]
+            << setw(14) << TRANSPORT_MODES[idx]
+            << setw(10) << countPerMode[idx]
+            << setw(20) << emissionPerMode[idx]
             << setw(20) << avg
+            << setw(12) << pct
             << '\n';
     }
-    printLine(65);
+    printLine(75);
 }
 
-//Breaks down emissions by age group for one city
-void showEmissionsByAgeGroup(Resident residents[], int size, string cityName) {
 
-    //We have 5 age groups matching getAgeGroup() in Resident.h
+//shows emissions broken down by age group
+//also shows the most popular transport mode per group
+void showEmissionsByAgeGroup(Resident residents[], int size, string cityName) {
     const int TOTAL_GROUPS = 5;
     const string GROUP_NAMES[TOTAL_GROUPS] = {
         "Children & Teenagers",
@@ -105,14 +140,13 @@ void showEmissionsByAgeGroup(Resident residents[], int size, string cityName) {
         string group = residents[i].getAgeGroup();
         int ag = -1;
 
-        //Match the age group string to an index
+        //match the age group string to an index
         for (int g = 0; g < TOTAL_GROUPS; g++) {
             if (GROUP_NAMES[g] == group) { ag = g; break; }
         }
         if (ag < 0) continue;
 
         int tm = findTransportIndex(residents[i].transportMode);
-
         totalEmission[ag] += residents[i].calculateMonthlyEmission();
         count[ag]++;
         if (tm >= 0) transportCount[ag][tm]++;
@@ -126,7 +160,7 @@ void showEmissionsByAgeGroup(Resident residents[], int size, string cityName) {
     for (int ag = 0; ag < TOTAL_GROUPS; ag++) {
         if (count[ag] == 0) continue;
 
-        //Find the most used transport mode for this age group
+        //find the most used transport for this age group
         int topMode = 0;
         for (int t = 1; t < TOTAL_MODES; t++) {
             if (transportCount[ag][t] > transportCount[ag][topMode]) topMode = t;
@@ -146,7 +180,69 @@ void showEmissionsByAgeGroup(Resident residents[], int size, string cityName) {
     }
 }
 
-//Compares total emissions across all three cities
+
+//finds and shows the highest and lowest emitting resident
+//lowest only counts residents who actually produce emissions
+//so bicycle and walking residents are excluded from lowest
+void showHighLowEmitters(Resident residents[], int size, string cityName) {
+    int highIdx = -1;
+    int lowIdx = -1;
+    double highVal = -1.0;
+    double lowVal = -1.0;
+
+    for (int i = 0; i < size; i++) {
+        double e = residents[i].calculateMonthlyEmission();
+
+        //track highest
+        if (e > highVal) {
+            highVal = e;
+            highIdx = i;
+        }
+
+        //track lowest but only if they actually emit something
+        if (e > 0 && (lowVal < 0 || e < lowVal)) {
+            lowVal = e;
+            lowIdx = i;
+        }
+    }
+
+    cout << '\n';
+    printLine(60);
+    cout << "  Highest & Lowest Emitters - " << cityName << '\n';
+    printLine(60);
+
+    if (highIdx >= 0) {
+        Resident& h = residents[highIdx];
+        cout << fixed << setprecision(2);
+        cout << "\n  Highest Emitting Resident:\n";
+        cout << "  ID         : " << h.residentID << '\n';
+        cout << "  Age        : " << h.age << '\n';
+        cout << "  Transport  : " << h.transportMode << '\n';
+        cout << "  Distance   : " << h.dailyDistance << " km/day\n";
+        cout << "  Emission   : " << highVal << " kg CO2/month\n";
+    }
+
+    printLine(40);
+
+    if (lowIdx >= 0) {
+        Resident& l = residents[lowIdx];
+        cout << "\n  Lowest Emitting Resident (Excluding Zero Emitters):\n";
+        cout << "  ID         : " << l.residentID << '\n';
+        cout << "  Age        : " << l.age << '\n';
+        cout << "  Transport  : " << l.transportMode << '\n';
+        cout << "  Distance   : " << l.dailyDistance << " km/day\n";
+        cout << "  Emission   : " << lowVal << " kg CO2/month\n";
+    }
+    else {
+        cout << "  No residents with non-zero emissions found.\n";
+    }
+
+    printLine(60);
+}
+
+
+//compares all three cities side by side
+//highlights the most and least polluting city at the bottom
 void compareAllCities(
     Resident cityA[], int sizeA,
     Resident cityB[], int sizeB,
@@ -160,6 +256,10 @@ void compareAllCities(
 
     double grandTotal = totalA + totalB + totalC;
     int grandCount = sizeA + sizeB + sizeC;
+
+    double avgA = sizeA > 0 ? totalA / sizeA : 0;
+    double avgB = sizeB > 0 ? totalB / sizeB : 0;
+    double avgC = sizeC > 0 ? totalC / sizeC : 0;
 
     cout << '\n';
     printLine(70);
@@ -175,30 +275,87 @@ void compareAllCities(
     cout << setw(28) << "City A - Metropolitan"
         << setw(12) << sizeA
         << setw(18) << totalA
-        << setw(14) << (sizeA > 0 ? totalA / sizeA : 0) << '\n';
+        << setw(14) << avgA << '\n';
     cout << setw(28) << "City B - University Town"
         << setw(12) << sizeB
         << setw(18) << totalB
-        << setw(14) << (sizeB > 0 ? totalB / sizeB : 0) << '\n';
+        << setw(14) << avgB << '\n';
     cout << setw(28) << "City C - Suburban/Rural"
         << setw(12) << sizeC
         << setw(18) << totalC
-        << setw(14) << (sizeC > 0 ? totalC / sizeC : 0) << '\n';
+        << setw(14) << avgC << '\n';
     printLine(70);
     cout << setw(28) << "Grand Total"
         << setw(12) << grandCount
         << setw(18) << grandTotal
         << setw(14) << (grandCount > 0 ? grandTotal / grandCount : 0) << '\n';
     printLine(70);
+
+    //figure out which city is most and least polluting by avg per resident
+    double avgs[3] = { avgA, avgB, avgC };
+    string names[3] = {
+        "City A - Metropolitan",
+        "City B - University Town",
+        "City C - Suburban/Rural"
+    };
+
+    int mostIdx = 0, leastIdx = 0;
+    for (int i = 1; i < 3; i++) {
+        if (avgs[i] > avgs[mostIdx]) mostIdx = i;
+        if (avgs[i] < avgs[leastIdx]) leastIdx = i;
+    }
+
+    cout << '\n';
+    cout << "  Most Polluting City : " << names[mostIdx]
+        << " (" << fixed << setprecision(2) << avgs[mostIdx] << " kg avg/resident)\n";
+    cout << "  Cleanest City       : " << names[leastIdx]
+        << " (" << fixed << setprecision(2) << avgs[leastIdx] << " kg avg/resident)\n";
+    printLine(70);
 }
 
-//Calls all analyses for one city
+
+//shows a submenu so the user picks what they want to see
 void runEmissionAnalysis(Resident residents[], int size, string cityName) {
-    cout << "\n========================================\n";
-    cout << "  Carbon Emission Analysis\n";
-    cout << "  City: " << cityName << "\n";
-    cout << "========================================\n";
-    showTotalEmissions(residents, size, cityName);
-    showEmissionsByTransport(residents, size, cityName);
-    showEmissionsByAgeGroup(residents, size, cityName);
+    int choice;
+
+    do {
+        cout << "\n========================================\n";
+        cout << "  Carbon Emission Analysis\n";
+        cout << "  City: " << cityName << "\n";
+        cout << "========================================\n";
+        cout << "1. Total Emissions Summary\n";
+        cout << "2. Breakdown by Transport Mode\n";
+        cout << "3. Breakdown by Age Group\n";
+        cout << "4. Highest & Lowest Emitting Resident\n";
+        cout << "5. Run Full Analysis\n";
+        cout << "0. Back\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            showTotalEmissions(residents, size, cityName);
+            break;
+        case 2:
+            showEmissionsByTransport(residents, size, cityName);
+            break;
+        case 3:
+            showEmissionsByAgeGroup(residents, size, cityName);
+            break;
+        case 4:
+            showHighLowEmitters(residents, size, cityName);
+            break;
+        case 5:
+            showTotalEmissions(residents, size, cityName);
+            showEmissionsByTransport(residents, size, cityName);
+            showEmissionsByAgeGroup(residents, size, cityName);
+            showHighLowEmitters(residents, size, cityName);
+            break;
+        case 0:
+            break;
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 0);
 }
