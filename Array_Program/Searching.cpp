@@ -1,12 +1,15 @@
 #include <iostream>
 #include <iomanip>
 #include "Searching.h"
+#include <chrono>
 
 using namespace std;
 
 void LinearSearchByTransport(Resident residents[], int size, string mode) 
 {
 	int count = 0;
+	auto start = chrono::high_resolution_clock::now();
+
 	cout << "Searching for transport mode: " << mode << "\n";
 
 	cout << "Resident ID    Age     Transport      Distance    Emission\n";
@@ -26,12 +29,18 @@ void LinearSearchByTransport(Resident residents[], int size, string mode)
 		}
 	}
 
+	auto end = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::microseconds> (end - start);
+
 	cout << "Total Found: " << count << "\n";
+	cout << "Time Taken: " << duration.count() << " microseconds \n";
 }
 
 void LinearSearchByDistance(Resident residents[], int size, double minDistance) 
 {
 	int count = 0;
+	auto start = chrono::high_resolution_clock::now();
+
 	cout << "Searching for distance greater than: " << minDistance << "km\n";
 
 	cout << "Resident ID    Age     Transport      Distance    Emission\n";
@@ -51,7 +60,11 @@ void LinearSearchByDistance(Resident residents[], int size, double minDistance)
 		}
 	}
 
+	auto end = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::microseconds> (end - start);
+
 	cout << "Total Found: " << count << "\n";
+	cout << "Time Taken: " << duration.count() << " microseconds \n";
 }
 
 void BinarySearchByTransport(Resident residents[], int size, string mode) 
@@ -60,6 +73,8 @@ void BinarySearchByTransport(Resident residents[], int size, string mode)
 	int high = size - 1;
 	int found = -1;
 	int count = 0;
+	auto start = chrono::high_resolution_clock::now();
+
 
 	cout << "Binary Searching for transport mode: " << mode << "\n";
 
@@ -108,13 +123,19 @@ void BinarySearchByTransport(Resident residents[], int size, string mode)
 		count++;
 	}
 
+	auto end = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::microseconds> (end - start);
+
 	cout << "Total Found: " << count << "\n";
+	cout << "Time Taken: " << duration.count() << " microseconds \n";
 
 }
 
 void SearchByAge(Resident residents[], int size, string ageGroup)
 {
 	int count = 0;
+	auto start = chrono::high_resolution_clock::now();
+
 	cout << "Searching for age group: " << ageGroup << "\n";
 
 	cout << "Resident ID    Age     Transport      Distance    Emission\n";
@@ -135,5 +156,9 @@ void SearchByAge(Resident residents[], int size, string ageGroup)
 		}
 	}
 
+	auto end = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::microseconds> (end - start);
+
 	cout << "Total Found: " << count << "\n";
+	cout << "Time Taken: " << duration.count() << " microseconds \n";
 }

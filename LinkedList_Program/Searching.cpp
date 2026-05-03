@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include "Searching.h"
+#include <chrono>
 
 using namespace std;
 
@@ -8,6 +9,7 @@ void LinearSearchByTransport(LinkedList& list, string mode)
 {
 	Node* current = list.getHead();
 	int count = 0;
+	auto start = chrono::high_resolution_clock::now();
 
 	cout << "Searching for transport mode" << mode << "\n";
 	cout << "Resident ID     Age     Transport     Distance     Emission\n";
@@ -28,7 +30,11 @@ void LinearSearchByTransport(LinkedList& list, string mode)
 		current = current->nextAddress;
 	}
 
+	auto end = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::microseconds> (end - start);
+
 	cout << "Total Found: " << count << "\n";
+	cout << "Time Taken: " << duration.count() << " microseconds \n";
 
 }
 
@@ -37,6 +43,7 @@ void LinearSearchByDistance(LinkedList& list, double minDistance)
 {
 	Node* current = list.getHead();
 	int count = 0;
+	auto start = chrono::high_resolution_clock::now();
 
 	cout << "Searching for distance greater than:  " << minDistance << "km\n";
 	cout << "Resident ID     Age     Transport     Distance     Emission\n";
@@ -57,13 +64,18 @@ void LinearSearchByDistance(LinkedList& list, double minDistance)
 		current = current->nextAddress;
 	}
 
+	auto end = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::microseconds> (end - start);
+
 	cout << "Total Found: " << count << "\n";
+	cout << "Time Taken: " << duration.count() << " microseconds \n";
 
 }
 
 void BinarySearchByTransport(LinkedList& list, string mode)
 {
 	int size = list.getSize();
+	auto start = chrono::high_resolution_clock::now();
 
 	if (size == 0)
 	{
@@ -142,7 +154,11 @@ void BinarySearchByTransport(LinkedList& list, string mode)
 		}
 		current = current->nextAddress;
 	}
+	auto end = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::microseconds> (end - start);
+
 	cout << "Total Found: " << count << "\n";
+	cout << "Time Taken: " << duration.count() << " microseconds \n";
 	delete[] modes;
 
 }
@@ -151,6 +167,7 @@ void SearchByAgeGroup(LinkedList& list, string ageGroup)
 {
 	Node* current = list.getHead();
 	int count = 0;
+	auto start = chrono::high_resolution_clock::now();
 
 	cout << "Searching for age group: " << ageGroup << "\n";
 	cout << "Resident ID     Age     Transport     Distance     Emission\n";
@@ -171,5 +188,9 @@ void SearchByAgeGroup(LinkedList& list, string ageGroup)
 		}
 		current = current->nextAddress;
 	}
+	auto end = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::microseconds> (end - start);
+
 	cout << "Total Found: " << count << "\n";
+	cout << "Time Taken: " << duration.count() << " microseconds \n";
 }
