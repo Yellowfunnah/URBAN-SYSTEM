@@ -135,6 +135,7 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="Recommendations.h" />
     <ClInclude Include="Resident.h" />
+    <ClInclude Include="Searching.h" />
     <ClInclude Include="Sorting.h" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Recommendations.cpp" />
+    <ClCompile Include="Searching.cpp" />
     <ClCompile Include="Sorting.cpp" />
   </ItemGroup>
   <ItemGroup>

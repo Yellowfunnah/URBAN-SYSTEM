@@ -7,6 +7,7 @@
 #include "EmissionAnalysis.h"
 #include "AgeAnalysis.h"
 #include "Recommendations.h"
+#include "Searching.h" 
 
 
 using namespace std;
@@ -18,10 +19,12 @@ void runCityMenu(LinkedList& list, string cityName) {
         cout << "\n===== CITY MENU =====";
         cout << "\n1. Display Residents";
 		cout << "\n2. Sorting Experiment";
-        cout << "\n3. Search by Transport";
-        cout << "\n4. Search by Distance";
-        cout << "\n5. Carbon Emission Analysis";
-        cout << "\n6. Age Group Analysis";
+        cout << "\n3. Search by Transport (Linear)";
+        cout << "\n4. Search by Distance (Linear)";
+        cout << "\n5. Binary Search by Transport";
+        cout << "\n6. Search by Age Group";
+        cout << "\n7. Carbon Emission Analysis";
+        cout << "\n8. Age Group Analysis";
         cout << "\n0. Back to City Selection";
         cout << "\nEnter choice: ";
         cin >> choice;
@@ -42,38 +45,68 @@ void runCityMenu(LinkedList& list, string cityName) {
             runSortingExperiment(list, cityName);
             break;
 
-        //case 3: {
-        //    string mode;
-        //    cout << "Enter transport mode: ";
-        //    cin >> mode;
-        //    cin.clear();
-        //    cin.ignore(1000, '\n');
+        case 3: {
+            string mode;
+            cout << "Enter transport mode: ";
+            cin >> mode;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            LinearSearchByTransport(list, mode);
+            break;
+        }
 
-        //    list.searchByTransport(mode);
-        //    break;
-        //}
+        case 4: {
+            double distance;
+            cout << "Enter minimum distance (km): ";
+            cin >> distance;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "Invalid distance!\n";
+                break;
+            }
+            LinearSearchByDistance(list, distance);
+            break;
+        }
 
-        //case 4: {
-        //    double distance;
-        //    cout << "Enter minimum distance (km): ";
-        //    cin >> distance;
+        case 5: {
+            string mode;
+            cout << "Enter transport mode: ";
+            cin >> mode;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            BinarySearchByTransport(list, mode);
+            break;
+        }
 
-        //    if (cin.fail()) {
-        //        cin.clear();
-        //        cin.ignore(1000, '\n');
-        //        cout << "Invalid distance!\n";
-        //        break;
-        //    }
+        case 6: {
+            cout << "Select Age Group:\n";
+            cout << "1. Children & Teenagers\n";
+            cout << "2. University Students / Young Adults\n";
+            cout << "3. Working Adults (Early Career)\n";
+            cout << "4. Working Adults (Late Career)\n";
+            cout << "5. Senior Citizens / Retirees\n";
+            cout << "Enter choice: ";
+            int ageChoice;
+            cin >> ageChoice;
 
-        //    list.searchByDistance(distance);
-        //    break;
-        //}
+            string ageGroup;
+            if (ageChoice == 1) ageGroup = "Children & Teenagers";
+            else if (ageChoice == 2) ageGroup = "University Students / Young Adults";
+            else if (ageChoice == 3) ageGroup = "Working Adults (Early Career)";
+            else if (ageChoice == 4) ageGroup = "Working Adults (Late Career)";
+            else if (ageChoice == 5) ageGroup = "Senior Citizens / Retirees";
+            else { cout << "Invalid choice!\n"; break; }
 
-        case 5:
+            SearchByAgeGroup(list, ageGroup);
+            break;
+        }
+
+        case 7:
             runEmissionAnalysis(list, cityName);
             break;
 
-        case 6:
+        case 8:
             analyzeAgeGroups(list, cityName);
             break;
 

@@ -25,8 +25,6 @@ public:
     void display();
 
     void insertAtEnd(Resident r);
-    //void searchByTransport(string transport);
-    //void searchByDistance(double threshold);
 
     // Dylan's sorting functions
     int getSize();
